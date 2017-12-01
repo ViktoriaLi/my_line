@@ -34,32 +34,3 @@ int get_next_line(const int fd, char **line)
 	free(buf);
 	return (ret);
 }
-
-
-/*	while (ret != 0)
-	{
-		buf = ft_memalloc(BUFF_SIZE * k);
-		tmp = ft_memalloc(BUFF_SIZE * k);
-		while (i < BUFF_SIZE * k && buf[i - 1] != '\n' && ret != 0)
-		{
-			ret = read(fd, &buf[i], 1);
-			i++;
-		}
-		tmp = ft_memcpy(tmp, buf, i);
-		free(buf);
-		if (i == BUFF_SIZE * k)
-		{
-			
-			buf = ft_memalloc(BUFF_SIZE * 2);
-			buf = ft_memcpy(tmp, buf, i);
-		}
-		if (buf[i - 1] == '\n')
-		{
-			buf[i - 1] = 0;
-			res = ft_memalloc(i);
-			res = ft_memcpy(res, buf, i);
-			line = &res;
-		}
-	}
-	
-	*/
