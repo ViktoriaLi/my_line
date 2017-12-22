@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "get_next_line.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
