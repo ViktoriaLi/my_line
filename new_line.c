@@ -42,6 +42,7 @@ int		get_next_line(const int fd, char **line)
 		if (ret == 0)
 			ret = 1;
 		next_str = ft_strsub(buf, ++i, BUFF_SIZE - i + 1);
+		printf("%s\n", );
 	}
 	return (ret);
 }
