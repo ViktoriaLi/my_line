@@ -58,7 +58,7 @@ char	*memory_increase(int *k, char *buf, int i)
 
 	tmp = NULL;
 	(*k) *= 2;
-	tmp = ft_memalloc(BUFF_SIZE * (*k));
+	tmp = ft_memalloc((*k) * BUFF_SIZE);
 	ft_memcpy(tmp, buf, i);
 	free(buf);
 	buf = tmp;
@@ -67,12 +67,13 @@ char	*memory_increase(int *k, char *buf, int i)
 
 int		make_string(char *buf, int ret, int fd, char **line)
 {
-	int i;
-	int k;
-	char *res;
+	int		i;
+	int		k;
+	char	*res;
 
 	i = 1;
 	k = 1;
+	res = NULL;
 	while (buf[i - 1] != '\n' && ret == 1)
 	{
 		if (i == BUFF_SIZE * k)
@@ -90,21 +91,18 @@ int		make_string(char *buf, int ret, int fd, char **line)
 
 int		get_next_line(const int fd, char **line)
 {
-	int ret;
-	char *buf;
+	int		ret;
+	char	*buf;
 
-	buf = NULL;
-	buf = ft_memalloc(BUFF_SIZE);
 	if (fd < 0 || fd == 2)
 		return (-1);
+	buf = NULL;
+	buf = ft_memalloc(BUFF_SIZE);
 	ret = read(fd, &buf[0], 1);
-	if (ret == -1)
+	if (ret == -1 || ret == 0)
 		return (ret);
-	if (ret == 1)
-	{
-		ret = make_string(buf, ret, fd, line);
-		if (ret == 0)
-			ret = 1;
-	}
+	ret = make_string(buf, ret, fd, line);
+	if (ret == 0)
+		ret = 1;
 	return (ret);
 }
