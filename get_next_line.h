@@ -25,5 +25,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		make_string(char *buf, int ret, int fd, char **line);
 char	*memory_increase(int *k, char *buf, int i);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strsub(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2;
 
 #endif
