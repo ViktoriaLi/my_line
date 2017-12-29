@@ -18,7 +18,6 @@ char	*ft_strmap(char const *s, char (*f)(char))
 	char	*dest;
 
 	i = 0;
-	dest = NULL;
 	if (s && f)
 	{
 		while (s[i] != 0)

@@ -26,6 +26,10 @@ int		make_string(char *buf, int ret, int fd, char **line);
 char	*memory_increase(int *k, char *buf, int i);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2;
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strnew(size_t size);
+void	*ft_memset(void *b, int c, size_t len);
+void	ft_strclr(char *s);
+char	*ft_strncat(char *s1, const char *s2, size_t n);
 
 #endif

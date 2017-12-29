@@ -33,7 +33,6 @@ char			*ft_strtrim(char const *s)
 	char	*res;
 
 	i = 0;
-	res = NULL;
 	if (!s)
 		return (NULL);
 	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')

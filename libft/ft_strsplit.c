@@ -89,7 +89,6 @@ char		**ft_strsplit(char const *s, char c)
 
 	i = 0;
 	words = 0;
-	dest = NULL;
 	if (s == NULL)
 		return (NULL);
 	while (s[i] != 0)

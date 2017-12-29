@@ -18,7 +18,6 @@ void	ft_bzero(void *s, size_t n)
 	unsigned char	*d;
 
 	i = 0;
-	d = NULL;
 	if (n != 0)
 	{
 		d = (unsigned char *)s;

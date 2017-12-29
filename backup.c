@@ -106,3 +106,38 @@ int		get_next_line(const int fd, char **line)
 		ret = 1;
 	return (ret);
 }
+
+/*
+int		get_next_line(const int fd, char **line)
+{
+	int		i;
+	int		j;
+	int		ret;
+	char	buf[BUFF_SIZE + 1];
+	char	*res;
+	static	char *next_str;
+	i = 0;
+	j = 0;
+	if (fd < 0 || fd == 2)
+		return (-1);
+	//printf("%d\n", 123);
+	//buf = ft_memalloc(BUFF_SIZE + 1);
+	buf[BUFF_SIZE] = 0;
+	ret = read(fd, &buf, BUFF_SIZE);
+	if (ret == -1 || ret == 0)
+		return (ret);
+	while (i < BUFF_SIZE && buf[i] != '\n')
+		i++;
+	if (buf[i] == '\n')
+	{
+		res = ft_memalloc(i);
+		ft_memcpy(res, buf, i);
+		*line = res;
+		if (ret == 0)
+			ret = 1;
+		next_str = ft_strsub(buf, i + 1, BUFF_SIZE - i);
+		printf("NEXT %s\n", next_str);
+	}
+	return (ret);
+}
+*/
