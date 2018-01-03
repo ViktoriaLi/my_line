@@ -1,110 +1,171 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   new_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlikhotk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/22 13:15:46 by vlikhotk          #+#    #+#             */
-/*   Updated: 2017/12/22 13:15:50 by vlikhotk         ###   ########.fr       */
+/*   Created: 2017/12/25 13:24:07 by vlikhotk          #+#    #+#             */
+/*   Updated: 2017/12/25 13:25:01 by vlikhotk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	size_t			i;
-	unsigned char	*d_temp;
-	unsigned char	*s_temp;
-
-	i = 0;
-	d_temp = NULL;
-	s_temp = NULL;
-	if (n != 0)
-	{
-		d_temp = (unsigned char *)dst;
-		s_temp = (unsigned char *)src;
-		while (i < n)
-		{
-			d_temp[i] = s_temp[i];
-			i++;
-		}
-		dst = (void *)d_temp;
-	}
-	return (dst);
-}
-
-void	*ft_memalloc(size_t size)
-{
-	size_t			i;
-	unsigned char	*dest;
-
-	i = 0;
-	dest = NULL;
-	if (!(dest = malloc(sizeof(unsigned char) * size)))
-		return (NULL);
-	while (i < size)
-	{
-		dest[i] = 0;
-		i++;
-	}
-	return (dest);
-}
-
-char	*memory_increase(int *k, char *buf, int i)
-{
-	char *tmp;
-
-	tmp = NULL;
-	(*k) *= 2;
-	tmp = ft_memalloc(BUFF_SIZE * (*k));
-	ft_memcpy(tmp, buf, i);
-	free(buf);
-	buf = tmp;
-	return (buf);
-}
-
-int		make_string(char *buf, int ret, int fd, char **line)
-{
-	int i;
-	int k;
-	char *res;
-
-	i = 1;
-	k = 1;
-	while (buf[i - 1] != '\n' && ret == 1)
-	{
-		if (i == BUFF_SIZE * k)
-			buf = memory_increase(&k, buf, i);
-		ret = read(fd, &buf[i], 1);
-		i++;
-	}
-	buf[i - 1] = 0;
-	res = ft_memalloc(i);
-	ft_memcpy(res, buf, i);
-	*line = res;
-	free(buf);
-	return (ret);
-}
+#include <stdio.h>
 
 int		get_next_line(const int fd, char **line)
 {
-	int ret;
-	char *buf;
-
-	buf = NULL;
-	buf = ft_memalloc(BUFF_SIZE);
-	if (fd < 0 || fd == 2)
+	int		i;
+	int		j;
+	int		ret;
+	char	buf[BUFF_SIZE + 1];
+	char	*tmp;
+	static	char *next_str;
+	i = 0;
+	j = 0;
+	if (fd < 0 || !line)
 		return (-1);
-	ret = read(fd, &buf[0], 1);
-	if (ret == -1)
-		return (ret);
-	if (ret == 1)
+	tmp = "";
+	buf[BUFF_SIZE] = 0;
+	ret = 1;
+	while (ret > 0)
 	{
-		ret = make_string(buf, ret, fd, line);
-		if (ret == 0)
+		if (next_str)
+		{
+			printf("NEXT1 %s\n", next_str);
+			i = 0;
+			while (next_str[i] != '\n' && next_str[i] != '\0')
+				i++;
+			printf("1EXAMPLE %s\n", *line);
+			if (next_str[i] == '\n')
+			{
+				printf("2EXAMPLE %s\n", *line);
+				*line = ft_strsub(next_str,  0, i);
+				printf("2EXAMPLE %s\n", *line);
+				next_str = ft_strsub(next_str, i + 1, ft_strlen(next_str) - i);
+				break;
+			}
+			else
+			{
+				tmp = ft_strjoin(tmp, next_str);
+				ft_strclr(next_str);
+			}
+		}
+		i = 0;
+		ft_strclr(buf);
+		ret = read(fd, &buf, BUFF_SIZE);
+		printf("1FIRST BUF %s\n", buf);
+		if (ret == -1 || ret == 0)
+			return (ret);
+		if (ret > 0)
+		{
+			while (i < BUFF_SIZE && buf[i] != '\n' && buf[i] != '\0')
+				i++;
+			if (buf[i] == '\n' || (i < BUFF_SIZE && buf[i] == '\0'))
+			{
+				printf("2FIRST BUF %s\n", buf);
+				tmp = ft_strjoin(tmp, buf);
+				printf("RES %s\n", tmp);
+				next_str = ft_strsub(buf, i + 1, BUFF_SIZE - i);
+				printf("NEXT %s\n", next_str);
+				i = 0;
+				while (tmp[i] != '\n' && tmp[i] != '\0')
+					i++;
+				*line = ft_strsub(tmp,  0, i);
+				break;
+			}
+			else
+			{
+				tmp = ft_strjoin(tmp, buf);
+				printf("ELSE TMP %s\n", tmp);
+			}
+		}
+	}
+	return (1);
+}
+
+/*#include "get_next_line.h"
+#include <stdio.h>
+
+int		get_next_line(const int fd, char **line)
+{
+	int		i;
+	int		j;
+	int		ret;
+	char	buf[BUFF_SIZE + 1];
+	//char	*buf;
+	char	*res;
+	char	*tmp;
+	int k;
+	static	char *next_str;
+	i = 0;
+	j = 0;
+	if (fd < 0 || !line)
+		return (-1);
+	res = "";
+	tmp = "";
+	//buf = ft_memalloc(BUFF_SIZE + 1);
+	buf[BUFF_SIZE] = 0;
+	ret = 1;
+	k = 2;
+	while (ret > 0)
+	{
+		if (next_str)
+		{
+			//printf("NEXT1 %s\n", next_str);
+			i = 0;
+			while (next_str[i] != '\n' && next_str[i] != '\0')
+				i++;
+			//printf("1EXAMPLE %s\n", res);
+			if (next_str[i] == '\n')
+			{
+				//printf("2EXAMPLE %s\n", res);
+				res = ft_strsub(next_str,  0, i);
+				//printf("2EXAMPLE %s\n", res);
+				next_str = ft_strsub(next_str, i + 1, ft_strlen(next_str) - i);
+				*line = res;
+				ret = 1;
+				break;
+			}
+			else
+			{
+				tmp = ft_strjoin(tmp, next_str);
+				ft_strclr(next_str);
+			}
+		}
+		i = 0;
+		ft_strclr(buf);
+		ret = read(fd, &buf, BUFF_SIZE);
+		//printf("1FIRST BUF %s\n", buf);
+		if (ret == -1 || ret == 0)
+			return (ret);
+		//if (ret == 0 && tmp != "")
+		//{
+		//	*line = tmp;
+		//}
+		while (i < BUFF_SIZE && buf[i] != '\n' && buf[i] != '\0')
+			i++;
+		if (buf[i] == '\n' || (i < BUFF_SIZE && buf[i] == '\0'))
+		{
+			//printf("2FIRST BUF %s\n", buf);
+			tmp = ft_strjoin(tmp, buf);
+			//printf("RES %s\n", tmp);
+			next_str = ft_strsub(buf, i + 1, BUFF_SIZE - i);
+			//printf("NEXT %s\n", next_str);
+			i = 0;
+			while (tmp[i] != '\n' && tmp[i] != '\0')
+				i++;
+			res = ft_strsub(tmp,  0, i);
+			*line = res;
 			ret = 1;
+			break;
+		}
+		else
+		{
+			tmp = ft_strjoin(tmp, buf);
+			//printf("ELSE TMP %s\n", tmp);
+		}
+
 	}
 	return (ret);
-}
+}*/

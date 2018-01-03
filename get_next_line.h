@@ -31,5 +31,7 @@ char	*ft_strnew(size_t size);
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_strclr(char *s);
 char	*ft_strncat(char *s1, const char *s2, size_t n);
+size_t		ft_strlen(const char *s);
+void	ft_strdel(char **as);
 
 #endif
