@@ -33,5 +33,6 @@ void	ft_strclr(char *s);
 char	*ft_strncat(char *s1, const char *s2, size_t n);
 size_t		ft_strlen(const char *s);
 void	ft_strdel(char **as);
+int		ft_isprint(int c);
 
 #endif
