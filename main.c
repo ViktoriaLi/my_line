@@ -27,11 +27,14 @@ int main(int argc, char **argv)
 			}
 		}
 		else
+		{
 			while (get_next_line(fd, &res))
 			{
 				printf("MAIN3 %s\n", res);
 				//free(res);
+			}
 		}
+
 	}
 }
 
