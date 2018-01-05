@@ -74,7 +74,7 @@ int		get_next_line(const int fd, char **line)
 				tmp = ft_strjoin(tmp, tmp2);
 				free(tmp2);
 				//printf("RES %s\n", tmp);
-				if (i != ret && ft_isprint(buf[i + 1]))
+				if (i != ret)
 				{
 					next_str = ft_strsub(buf, i + 1, ret - i - 1);
 					//printf("NEXT %s\n", next_str);
