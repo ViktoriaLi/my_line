@@ -46,8 +46,19 @@ int		get_next_line(const int fd, char **line)
 				//printf("2EXAMPLE %s\n", *line);
 				*line = ft_strsub(next_str,  0, i);
 				//printf("2EXAMPLE %s\n", *line);
-				next_str = ft_strsub(next_str, i + 1, ft_strlen(next_str) - i);
-				return (1);
+				if (i != (int)ft_strlen(next_str))
+				{
+					next_str = ft_strsub(next_str, i + 1, ft_strlen(next_str) - i);
+				}
+				else
+					if (next_str)
+					{
+						free(next_str);
+						next_str = NULL;
+					}
+
+				ret = 1;
+				break;
 			}
 			else
 			{
@@ -58,10 +69,22 @@ int		get_next_line(const int fd, char **line)
 		i = 0;
 		ft_strclr(buf);
 		ret = read(fd, &buf, BUFF_SIZE);
+		if (ret == 0)
+			return (ret);
+		/*else
+		{
+			ret = 1;
+			continue;
+		}*/
 		//printf("1FIRST BUF %s\n", buf);
 		//printf("RET%d\n", ret);
-		if (ret == -1 || ret == 0)
-			return (ret);
+		/*if (ret == 0)
+			return (ret);*/
+		/*else if (ret == 0)
+		{
+			ret = 1;
+			continue;
+		}*/
 		if (ret > 0)
 		{
 			while (i < ret && buf[i] != '\n')
@@ -73,15 +96,23 @@ int		get_next_line(const int fd, char **line)
 				tmp2 = ft_strsub(buf, 0, i);
 				tmp = ft_strjoin(tmp, tmp2);
 				free(tmp2);
+				tmp2 = NULL;
 				//printf("RES %s\n", tmp);
 				if (i != ret)
 				{
 					next_str = ft_strsub(buf, i + 1, ret - i - 1);
 					//printf("NEXT %s\n", next_str);
-				//printf("POINTER %p\n", next_str);
+					//printf("POINTER %p\n", next_str);
 				}
+				else
+					if (next_str)
+					{
+						free(next_str);
+						next_str = NULL;
+					}
 				//printf("NEXT %s\n", next_str);
 				*line = ft_strsub(tmp, 0, ft_strlen(tmp));
+				ret = 1;
 				break;
 			}
 			else
@@ -91,7 +122,7 @@ int		get_next_line(const int fd, char **line)
 			}
 		}
 	}
-	return (1);
+	return (ret);
 }
 
 /*
