@@ -13,9 +13,10 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-char *if_next(char **line, char **tmp, char **next_str)
+char *if_next(char **line, char **tmp, char **next_str, int *fd)
 {
 	int i;
+
 	//printf("NEXT1 %s\n", *next_str);
 	i = 0;
 	if (*line)
@@ -36,17 +37,21 @@ char *if_next(char **line, char **tmp, char **next_str)
 			(*next_str) = ft_strsub((*next_str), i + 1, ft_strlen((*next_str)) - i);
 		}
 		else
+		{
 			if ((*next_str))
 			{
 				free((*next_str));
 				(*next_str) = NULL;
 			}
+			//*fd = 0;
+		}
 	}
 	else
 	{
 		(*tmp) = ft_strjoin((*tmp), (*next_str));
 		free((*next_str));
 		(*next_str) = NULL;
+		*fd = 0;
 	}
 	return (*line);
 }
@@ -59,7 +64,7 @@ int		get_next_line(const int fd, char **line)
 	char	buf[BUFF_SIZE + 1];
 	char	*tmp;
 	char 	*tmp2;
-	static	char *next_str;
+	static	t_list all_fd[12288];
 	i = 0;
 	j = 0;
 	tmp = "";
@@ -70,11 +75,27 @@ int		get_next_line(const int fd, char **line)
 	}
 	*line = NULL;
 	ret = 1;
-	if (next_str)
+	if (fd)
 	{
-		//printf("NEXT1 %s\n", next_str);
-		if (if_next(line, &tmp, &next_str))
-			return (1);
+		j = 0;
+		while (j < 12288)
+		{
+			if (fd == all_fd[j].fd_mem)
+				if (all_fd[j].next)
+				{
+					//printf("NEXT1 %s\n", all_fd[j].next);
+					if (if_next(line, &tmp, &all_fd[j].next, &all_fd[j].fd_mem))
+						return (1);
+				}
+			j++;
+		}
+		if (j == 12288)
+		{
+			j = 0;
+			while (all_fd[j].fd_mem)
+				j++;
+			all_fd[j].fd_mem = fd;
+		}
 	}
 	while (ret > 0)
 	{
@@ -110,17 +131,20 @@ int		get_next_line(const int fd, char **line)
 				//printf("RES %s\n", tmp);
 				if (i != ret)
 				{
-					next_str = ft_strsub(buf, i + 1, ret - i - 1);
-					//printf("NEXT %s\n", next_str);
-					//printf("POINTER %p\n", next_str);
+					all_fd[j].next = ft_strsub(buf, i + 1, ret - i - 1);
+					//printf("NEXT %s\n", all_fd[j].next);
+					//printf("POINTER %p\n", all_fd[j].next);
 				}
 				else
-					if (next_str)
+				{
+					if (all_fd[j].next)
 					{
-						free(next_str);
-						next_str = NULL;
+						free(all_fd[j].next);
+						all_fd[j].next = NULL;
 					}
-				//printf("NEXT %s\n", next_str);
+					all_fd[j].fd_mem = 0;
+				}
+				//printf("NEXT %s\n", all_fd[j].next);
 				*line = ft_strsub(tmp, 0, ft_strlen(tmp));
 				ret = 1;
 				break;

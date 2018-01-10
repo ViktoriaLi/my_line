@@ -19,6 +19,12 @@
 
 # define BUFF_SIZE 32
 
+typedef struct	s_list
+{
+	int  fd_mem;
+  char *next;
+}				t_list;
+
 int		get_next_line(const int fd, char **line);
 void	*ft_memalloc(size_t size);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
