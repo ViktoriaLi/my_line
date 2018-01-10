@@ -15,6 +15,7 @@
 char		*if_next(char **line, char **tmp, char **next_s, int *fd)
 {
 	int i;
+	char	*b1;
 
 	i = 0;
 	while ((*next_s)[i] != '\n' && (*next_s)[i] != '\0')
@@ -23,7 +24,11 @@ char		*if_next(char **line, char **tmp, char **next_s, int *fd)
 	{
 		*line = ft_strsub((*next_s), 0, i);
 		if (i != (int)ft_strlen((*next_s)))
+		{
+			b1 = (*next_s);
 			(*next_s) = ft_strsub((*next_s), i + 1, ft_strlen((*next_s)) - i);
+			free(b1);
+		}
 		else
 		{
 			if ((*next_s))
@@ -93,6 +98,7 @@ int			reading(char **line, t_list *all_fd, int j, char **tmp)
 	int		ret;
 	char	buf[BUFF_SIZE + 1];
 	char	*tmp2;
+	char	*b1;
 
 	while ((ret = read(all_fd[j].fd_mem, &buf, BUFF_SIZE)) > 0)
 	{
@@ -103,7 +109,10 @@ int			reading(char **line, t_list *all_fd, int j, char **tmp)
 		if (buf[i] == '\n' || (i == ret && i != BUFF_SIZE))
 		{
 			tmp2 = ft_strsub(buf, 0, i);
+			b1 = *tmp;
 			*tmp = ft_strjoin(*tmp, tmp2);
+			if (b1[0])
+				free(b1);
 			ft_strdel(&tmp2);
 			if (i != ret)
 				all_fd[j].next = ft_strsub(buf, i + 1, ret - i - 1);
@@ -117,7 +126,12 @@ int			reading(char **line, t_list *all_fd, int j, char **tmp)
 			return (1);
 		}
 		else
-			*tmp = ft_strjoin(*tmp, buf);
+		{
+			b1 = *tmp;
+			*tmp = ft_strjoin(b1, buf);
+			if (b1[0])
+				free(b1);
+		}
 	}
 	return (0);
 }
