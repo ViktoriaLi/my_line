@@ -18,19 +18,14 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	char	*dest;
 
 	i = 0;
-	if (!s)
+	if (!s || start > ft_strlen(s) || !(dest = (char *)malloc(sizeof(char) * (len + 1))))
 		return (NULL);
-	if (s[start] == 0 || !(dest = (char *)malloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	if (len != 0)
+	while (i < len && s[start] != 0)
 	{
-		while (i < len)
-		{
-			dest[i] = (char)s[start];
-			i++;
-			start++;
-		}
-		dest[i] = 0;
+		dest[i] = (char)s[start];
+		i++;
+		start++;
 	}
+	dest[i] = 0;
 	return (dest);
 }

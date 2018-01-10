@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
 
 char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
@@ -18,14 +18,20 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	char	*dest;
 
 	i = 0;
-	if (!s || start > ft_strlen(s) || !(dest = (char *)malloc(sizeof(char) * (len + 1))))
+	dest = NULL;
+	if (!s)
 		return (NULL);
-	while (i < len && s[start] != 0)
+	if (!(dest = (char *)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	if (len != 0)
 	{
-		dest[i] = (char)s[start];
-		i++;
-		start++;
+		while (i < len)
+		{
+			dest[i] = (char)s[start];
+			i++;
+			start++;
+		}
+		dest[i] = 0;
 	}
-	dest[i] = 0;
 	return (dest);
 }

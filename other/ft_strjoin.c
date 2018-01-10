@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
 
 static char	*copy_strings(char const *s1, char const *s2, char *fs1)
 {
@@ -42,10 +42,13 @@ char		*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	j = 0;
-	if (s1 == NULL || s2 == NULL)
+	fs1 = NULL;
+	if (s1 == NULL)
 		return (NULL);
+	if (s2 == NULL)
+		return (char *)(s1);
 	fs1 = (char *)s1;
-	while (s1[i] != 0)
+	while (fs1[i] != 0)
 		i++;
 	while (s2[j] != 0)
 		j++;

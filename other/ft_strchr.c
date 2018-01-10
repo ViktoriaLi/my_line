@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlikhotk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/08 13:06:57 by vlikhotk          #+#    #+#             */
-/*   Updated: 2017/11/08 13:07:00 by vlikhotk         ###   ########.fr       */
+/*   Created: 2017/11/04 12:44:27 by vlikhotk          #+#    #+#             */
+/*   Updated: 2017/11/04 12:44:37 by vlikhotk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char	*ft_strchr(const char *s, int c)
 {
-	size_t	i;
-	char	*dest;
+	int j;
+	int len;
 
-	i = 0;
-	if (!s || start > ft_strlen(s) || !(dest = (char *)malloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	while (i < len && s[start] != 0)
-	{
-		dest[i] = (char)s[start];
-		i++;
-		start++;
-	}
-	dest[i] = 0;
-	return (dest);
+	j = 0;
+	len = 0;
+	while (s[len] != 0)
+		len++;
+	if (c == 0)
+		return (char*)(&s[len]);
+	while (s[j] != c && j < len)
+		j++;
+	if (s[j] == c)
+		return (char*)(&s[j]);
+	return (NULL);
 }

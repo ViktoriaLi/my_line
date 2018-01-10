@@ -30,7 +30,7 @@ static char	*copy_strings(char const *s1, char const *s2, char *fs1)
 		i++;
 		j++;
 	}
-	fs1[i] = '\0';
+	fs1[i] = 0;
 	return (fs1);
 }
 
@@ -44,10 +44,8 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	j = 0;
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	if (s2 == NULL)
-		return (char *)(s1);
 	fs1 = (char *)s1;
-	while (fs1[i] != 0)
+	while (s1[i] != 0)
 		i++;
 	while (s2[j] != 0)
 		j++;
