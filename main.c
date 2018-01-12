@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			while (get_next_line(fd, &res))
+			while (get_next_line(fd, &res) > 0)
 			{
 				printf("MAIN3 %s\n", res);
 				free(res);
