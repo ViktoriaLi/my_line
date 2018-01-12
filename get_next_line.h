@@ -21,21 +21,14 @@
 # define FD_LIMIT 12288
 
 int		get_next_line(const int fd, char **line);
-void	*ft_memalloc(size_t size);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-int		make_string(char *buf, int ret, int fd, char **line);
-char	*memory_increase(int *k, char *buf, int i);
+
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strnew(size_t size);
-void	*ft_memset(void *b, int c, size_t len);
 void	ft_strclr(char *s);
-char	*ft_strncat(char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);
 void	ft_strdel(char **as);
-int		ft_isprint(int c);
-char	*ft_strdup(const char *s1);
-char	*ft_strchr(const char *s, int c);
+char	*if_next(char **line, char **tmp, char **next_s, int i);
+int		if_n_found(char *buf, char **tmp, int ret, char **all_fd);
+int		reading(char **line, char **all_fd, char **tmp, int fd);
 
 #endif

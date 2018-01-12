@@ -16,12 +16,13 @@ char	*if_next(char **line, char **tmp, char **next_s, int i)
 {
 	char	*rem;
 
+	rem = NULL;
 	while ((*next_s)[i] != '\n' && (*next_s)[i] != '\0')
 		i++;
 	if ((*next_s)[i] == '\n')
 	{
 		*line = ft_strsub((*next_s), 0, i);
-		if (i != (int)ft_strlen((*next_s)))
+		if (i != (int)ft_strlen((*next_s)) && (*next_s)[i + 1])
 		{
 			rem = (*next_s);
 			(*next_s) = ft_strsub((*next_s), i + 1, ft_strlen((*next_s)) - i);
@@ -35,8 +36,11 @@ char	*if_next(char **line, char **tmp, char **next_s, int i)
 	}
 	else
 	{
+		rem = (*tmp);
 		(*tmp) = ft_strjoin((*tmp), (*next_s));
 		ft_strdel(next_s);
+		if (rem[0])
+			ft_strdel(&rem);
 	}
 	return (*line);
 }
@@ -49,19 +53,30 @@ int		if_n_found(char *buf, char **tmp, int ret, char **all_fd)
 
 	i = 0;
 	buf[ret] = 0;
+	rem = NULL;
+	swap = NULL;
 	while (i < ret && buf[i] != '\n')
 		i++;
 	if (buf[i] == '\n' || (i == ret && i != BUFF_SIZE))
 	{
-		rem = ft_strsub(buf, 0, i);
-		swap = *tmp;
-		*tmp = ft_strjoin(*tmp, rem);
-		if (swap[0])
-			ft_strdel(&swap);
-		ft_strdel(&rem);
-		*all_fd = ft_strsub(buf, i + 1, ret - i - 1);
-		if (i == ret)
-			ft_strdel(all_fd);
+		if (i > 0)
+			rem = ft_strsub(buf, 0, i);
+		if (rem)
+		{
+			swap = *tmp;
+			*tmp = ft_strjoin(*tmp, rem);
+			if (swap[0])
+				ft_strdel(&swap);
+			ft_strdel(&rem);
+		}
+		if ((ret - i - 1) > 0)
+		{
+			rem = *all_fd;
+			*all_fd = ft_strsub(buf, i + 1, ret - i - 1);
+			ft_strdel(&rem);
+			if (i == ret)
+				ft_strdel(all_fd);
+		}
 		return (1);
 	}
 	return (0);
@@ -73,6 +88,7 @@ int		reading(char **line, char **all_fd, char **tmp, int fd)
 	char	buf[BUFF_SIZE + 1];
 	char	*swap;
 
+	swap = NULL;
 	while ((ret = read(fd, &buf, BUFF_SIZE)) > 0)
 	{
 		if (if_n_found(buf, tmp, ret, &all_fd[fd]))
