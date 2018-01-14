@@ -30,5 +30,6 @@ void	ft_strdel(char **as);
 void if_next(char **line, char **tmp, char **next_s, int i);
 int		if_n_found(char *buf, char **tmp, int ret, char **all_fd);
 int		reading(char **line, char **all_fd, char **tmp, int fd);
+void	swap_and_join(char **tmp, char *buf);
 
 #endif

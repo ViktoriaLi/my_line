@@ -12,10 +12,23 @@
 
 #include "get_next_line.h"
 
+void swap_and_join(char **tmp, char *buf)
+{
+	char *swap;
+
+	swap = NULL;
+	swap = *tmp;
+	*tmp = ft_strjoin(swap, buf);
+	if (swap[0])
+		ft_strdel(&swap);
+}
+
 void	if_next(char **line, char **tmp, char **next_s, int i)
 {
 	char	*rem;
 
+	while ((*next_s)[i] != '\n' && (*next_s)[i] != '\0')
+		i++;
 	if ((*next_s)[i] == '\n')
 	{
 		*line = ft_strsub((*next_s), 0, i);
@@ -33,11 +46,8 @@ void	if_next(char **line, char **tmp, char **next_s, int i)
 	}
 	else
 	{
-		rem = (*tmp);
-		(*tmp) = ft_strjoin((*tmp), (*next_s));
+		swap_and_join(tmp, (*next_s));
 		ft_strdel(next_s);
-		if (rem[0])
-			ft_strdel(&rem);
 	}
 }
 
@@ -45,7 +55,6 @@ int		if_n_found(char *buf, char **tmp, int ret, char **all_fd)
 {
 	int		i;
 	char	*rem;
-	char	*swap;
 
 	i = 0;
 	rem = NULL;
@@ -54,10 +63,7 @@ int		if_n_found(char *buf, char **tmp, int ret, char **all_fd)
 	if ((buf[i] == '\n' || (i == ret && i != BUFF_SIZE)))
 	{
 		rem = ft_strsub(buf, 0, i);
-		swap = *tmp;
-		*tmp = ft_strjoin(*tmp, rem);
-		if (swap[0])
-			ft_strdel(&swap);
+		swap_and_join(tmp, rem);
 		ft_strdel(&rem);
 		if ((ret - i - 1) > 0)
 		{
@@ -89,12 +95,7 @@ int		reading(char **line, char **all_fd, char **tmp, int fd)
 			return (1);
 		}
 		else
-		{
-			swap = *tmp;
-			*tmp = ft_strjoin(swap, buf);
-			if (swap[0])
-				ft_strdel(&swap);
-		}
+			swap_and_join(tmp, buf);
 	}
 	return (0);
 }
@@ -109,16 +110,12 @@ int		get_next_line(const int fd, char **line)
 	res = 0;
 	tmp = "";
 	buf = NULL;
-	if (fd < 0 || fd > FD_LIMIT || BUFF_SIZE < 1 || BUFF_SIZE > 8192000 ||
+	if (fd < 0 || fd > FD_LIMIT || BUFF_SIZE < 1 || BUFF_SIZE > STACK_LIMIT ||
 		!line || read(fd, buf, 0) < 0)
 		return (-1);
 	*line = NULL;
 	if (all_fd[fd])
-	{
-		while (all_fd[fd][res] != '\n' && all_fd[fd][res] != '\0')
-			res++;
 		if_next(line, &tmp, &all_fd[fd], res);
-	}
 	if (*line)
 		return (1);
 	res = reading(line, all_fd, &tmp, fd);
