@@ -1,3 +1,0 @@
-/Users/vlikhotk/my_line/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/vlikhotk/my_line/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/vlikhotk/my_line/cmake-build-debug/CMakeFiles/my_line.dir
