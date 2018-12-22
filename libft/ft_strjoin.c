@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
 static char	*copy_strings(char const *s1, char const *s2, char *fs1)
 {

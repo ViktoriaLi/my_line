@@ -6,13 +6,13 @@
 /*   By: vlikhotk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/25 13:24:07 by vlikhotk          #+#    #+#             */
-/*   Updated: 2018/01/11 17:49:08 by vlikhotk         ###   ########.fr       */
+/*   Updated: 2018/01/15 11:05:52 by vlikhotk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void swap_and_join(char **tmp, char *buf)
+void	swap_and_join(char **tmp, char *buf)
 {
 	char *swap;
 
